@@ -4,39 +4,48 @@ import Lenis from "@studio-freight/lenis"
 
 export default function LenisProvider({ children }) {
   useEffect(() => {
+    // Ensure native CSS smooth scroll doesn't conflict
+    const prevScrollBehavior = document.documentElement.style.scrollBehavior
+    document.documentElement.style.scrollBehavior = 'auto'
+
     const lenis = new Lenis({
-      // smooth and duration are defaults in v1, but we set explicitly
-      duration: 1.2,
-      smooth: true,
-      // easing: defaults fine; can tweak if needed
+      duration: 0.9,
+      easing: (t) => 1 - Math.pow(1 - t, 3), // easeOutCubic
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      smoothTouch: false,
+      wheelMultiplier: 1.1,
+      touchMultiplier: 1.0,
     })
 
-    function raf(time) {
+    let rafId
+    const raf = (time) => {
       lenis.raf(time)
-      requestAnimationFrame(raf)
+      rafId = requestAnimationFrame(raf)
     }
-    requestAnimationFrame(raf)
+    rafId = requestAnimationFrame(raf)
 
     // Intercept in-page anchor navigation so Lenis handles it with offset
     const onClick = (e) => {
       const link = e.target.closest('a[href^="#"]');
       if (!link) return;
-      const id = link.getAttribute('href');
-      if (!id || id === '#') return;
-      const target = document.querySelector(id);
+  const id = link.getAttribute('href');
+  if (!id || id === '#') return;
+  const target = document.querySelector(id);
       if (!target) return;
-      e.preventDefault();
-      // account for fixed header height if any (CardNav height ~88px per page.js scroll-padding-top)
-      const headerOffset = 88;
-      const rect = target.getBoundingClientRect();
-      const absoluteY = window.scrollY + rect.top - headerOffset;
-      lenis.scrollTo(absoluteY, { offset: 0 });
+  e.preventDefault();
+  // account for fixed header height if any (CardNav height ~88px per page.js scroll-padding-top)
+  const headerOffset = 88;
+  lenis.scrollTo(target, { offset: -headerOffset, duration: 0.9 });
     };
     document.addEventListener('click', onClick);
 
     return () => {
-      lenis.destroy()
+  cancelAnimationFrame(rafId)
+  lenis.destroy()
       document.removeEventListener('click', onClick);
+  document.documentElement.style.scrollBehavior = prevScrollBehavior
     }
   }, [])
 
