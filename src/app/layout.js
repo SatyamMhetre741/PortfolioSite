@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import LenisProvider from "./components/lenis-provider"
+import ScrollGlow from "./components/scroll-glow"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,6 +27,7 @@ export default function RootLayout({ children }) {
         <LenisProvider>
           {children}
         </LenisProvider>
+        <ScrollGlow color="#03b3c3" />
 
       </body>
     </html>
