@@ -39,17 +39,15 @@ const Hyperspeed = ({ effectOptions = {
     sticks: 0x03B3C3,
   }
 } }) => {
-  const hyperspeed = useRef(null);
+  const containerRef = useRef(null);
   const appRef = useRef(null);
   
   useEffect(() => {
     if (appRef.current) {
       appRef.current.dispose();
-      const container = document.getElementById('lights');
+      const container = containerRef.current;
       if (container) {
-        while (container.firstChild) {
-          container.removeChild(container.firstChild);
-        }
+        while (container.firstChild) container.removeChild(container.firstChild);
       }
     }
 
@@ -353,9 +351,22 @@ const Hyperspeed = ({ effectOptions = {
           antialias: false,
           alpha: true
         });
-        this.renderer.setSize(container.offsetWidth, container.offsetHeight, false);
+        this.renderer.setSize(
+          (container?.offsetWidth || window.innerWidth),
+          (container?.offsetHeight || window.innerHeight),
+          false
+        );
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.composer = new EffectComposer(this.renderer);
+        // Ensure canvas is pinned to top-left and fills container
+        Object.assign(this.renderer.domElement.style, {
+          position: 'absolute',
+          top: '0',
+          left: '0',
+          width: '100%',
+          height: '100%',
+          display: 'block',
+        });
         container.append(this.renderer.domElement);
 
         this.camera = new THREE.PerspectiveCamera(
@@ -417,12 +428,13 @@ const Hyperspeed = ({ effectOptions = {
         this.onTouchEnd = this.onTouchEnd.bind(this);
         this.onContextMenu = this.onContextMenu.bind(this);
 
-        window.addEventListener("resize", this.onWindowResize.bind(this));
+  this.boundOnResize = this.onWindowResize.bind(this);
+  window.addEventListener("resize", this.boundOnResize);
       }
 
       onWindowResize() {
-        const width = this.container.offsetWidth;
-        const height = this.container.offsetHeight;
+  const width = this.container?.offsetWidth || window.innerWidth;
+  const height = this.container?.offsetHeight || window.innerHeight;
 
         this.renderer.setSize(width, height);
         this.camera.aspect = width / height;
@@ -602,7 +614,7 @@ const Hyperspeed = ({ effectOptions = {
           this.scene.clear();
         }
         
-        window.removeEventListener("resize", this.onWindowResize.bind(this));
+  if (this.boundOnResize) window.removeEventListener("resize", this.boundOnResize);
         if (this.container) {
           this.container.removeEventListener("mousedown", this.onMouseDown);
           this.container.removeEventListener("mouseup", this.onMouseUp);
@@ -1140,7 +1152,7 @@ const Hyperspeed = ({ effectOptions = {
     }
 
     (function () {
-      const container = document.getElementById('lights');
+      const container = containerRef.current;
       const options = { ...effectOptions };
       options.distortion = distortions[options.distortion];
 
@@ -1159,8 +1171,8 @@ const Hyperspeed = ({ effectOptions = {
   return (
     <div
       id="lights"
-      ref={hyperspeed}
-      style={{ position: 'fixed', inset: 0, width: '100vw', height: '100vh', zIndex: -1, background: '#000' }}
+  ref={containerRef}
+  style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, width: '100%', height: '100%', zIndex: -1, background: '#000', margin: 0, padding: 0, pointerEvents: 'none' }}
     />
   );
 }

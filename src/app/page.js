@@ -17,6 +17,7 @@ export default function Home() {
     const style = document.createElement("style");
     style.textContent = `
   /* Cursor will be hidden by TargetCursor when needed */
+  html, body { margin: 0; padding: 0; }
   html { scroll-behavior: smooth; scroll-padding-top: 88px; }
     `;
     document.head.appendChild(style);
