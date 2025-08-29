@@ -1,0 +1,1 @@
+This placeholder confirms that route.js was intended to be removed. Delete this folder if not needed.
