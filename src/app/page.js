@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Hyperspeed from "./components/road";
 import FuzzyText from "./components/fuzzy-text";
 import CardNav from './components/card-nav'
@@ -7,6 +7,7 @@ import TextPressure from './components/pressure-text';
 import TargetCursor from "./components/target-cursor";
 import TiltedCard from './components/title-card';
 import LogoLoop from './components/logo-loop';
+import VariableProximity from './components/variable-proximity';
 import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss } from 'react-icons/si';
 import { FaGithub, FaLinkedin, FaTwitter, FaInstagram } from "react-icons/fa";
 
@@ -72,7 +73,7 @@ export default function Home() {
 
   // Brand name to show instead of logo
   const brandName = "Satyam Mhetre";
-
+  const containerRef = useRef(null);
 
   return (
   <main style={{ position: "relative", minHeight: "100vh", width: "100%" }}>
@@ -140,11 +141,11 @@ export default function Home() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          alignItems: "center",
+          alignItems: "flex-start",
           minHeight: "100vh",
           padding: "1rem",
           color: "white",
-          textAlign: "center",
+          textAlign: "left",
           fontFamily: '"Oswald", "Anton", "Impact", sans-serif',
           width: "100%",
           boxSizing: "border-box",
@@ -159,49 +160,63 @@ export default function Home() {
             padding: "1.5rem",
             boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
             border: "none",
-            maxWidth: "min(92vw, 1000px)",
-            margin: "0 auto",
+            width: "80vw",
+            alignSelf: "flex-start",
+            float: "left",
+            margin: 0,
+            boxSizing: "border-box",
           }}
         >
-          {/* Heading with constrained size to prevent overflow */}
-          <div style={{ maxWidth: "100%" }}>
-            <FuzzyText
-              fontSize={"clamp(1.25rem, 6vw, 4rem)"}
-              fontWeight={800}
-              baseIntensity={0.05}
-              hoverIntensity={0.05}
-              enableHover
-            >
-              lost on a never ending road.
-            </FuzzyText>
+          <div
+          ref={containerRef}
+      style={{position: 'relative'}}
+          >
+            <VariableProximity
+              label={"Lost on a never ending road...but we all are, aren't we"}
+              className={'variable-proximity-demo'}
+              fromFontVariationSettings="'wght' 400, 'opsz' 9"
+              toFontVariationSettings="'wght' 800, 'opsz' 40"
+              containerRef={containerRef}
+              radius={100}
+              falloff='linear'
+              style={{ fontFamily: '"Roboto Flex", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif', fontSize: 'clamp(2rem, 6vw, 5rem)', lineHeight: 1.1, letterSpacing: 0.5 }}
+            />
           </div>
 
-          {/* Subheading with same effect, smaller size, not italic */}
-          <FuzzyText
-            fontSize={"clamp(1rem, 4.5vw, 2rem)"}
-            fontWeight={700}
-            baseIntensity={0.08}
-            hoverIntensity={0.06}
-            enableHover
-          >
-            Welcome to my portfolio
-          </FuzzyText>
-      <TextPressure
-        text="Welcome to my portfolio!"
-        flex={false}
-        alpha={false}
-        stroke={false}
-        width={true}
-        weight={true}
-        italic={true}
-        textColor="#ffffff"
-        strokeColor="#ff0000"
-        minFontSize={36}
-      />
+
     </div>
 
   {/* Close hero container */}
   </div>
+
+    {/* Welcome text below the hero (visible after scrolling) */}
+      <section id="welcome" style={{ position: "relative", zIndex: 1 }}>
+        <div
+          style={{
+            minHeight: "50vh",
+            display: "grid",
+            placeItems: "center",
+            padding: "2rem 1rem",
+            color: "#eaeaea",
+          }}
+        >
+          <div style={{ position: 'relative', width: '90vw', height: '400px', margin: '0 auto', whiteSpace: 'nowrap', overflow: 'hidden' }}>
+          <TextPressure
+            text="Welcome to my portfolio!"
+            flex={true}
+            alpha={true}
+            stroke={false}
+            width={true}
+            weight={true}
+            italic={true}
+            textColor="#ffffff"
+            strokeColor="#ff0000"
+            minFontSize={128}
+            wordGapEm={1}
+          />
+        </div>
+        </div>
+      </section>
 
 
       {/* About Section (scroll target) */}

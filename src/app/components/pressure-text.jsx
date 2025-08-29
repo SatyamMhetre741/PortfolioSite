@@ -22,6 +22,9 @@ const TextPressure = ({
 
   minFontSize = 24,
 
+  // Extra gap between words, in em units (applies to space characters)
+  wordGapEm = 0.5,
+
 }) => {
   const containerRef = useRef(null);
   const titleRef = useRef(null);
@@ -187,17 +190,25 @@ const TextPressure = ({
         }}
       >
         {chars.map((char, i) => {
-          const isSpace = char === ' ';
-          const displayChar = isSpace ? '\u00A0' : char; // non-breaking space
+          if (char === ' ') {
+            // Render spaces as fixed-width gaps so words have visible spacing
+            return (
+              <span
+                key={`space-${i}`}
+                aria-hidden="true"
+                className="inline-block"
+                style={{ width: `${wordGapEm}em` }}
+              />
+            );
+          }
           return (
             <span
               key={i}
               ref={(el) => (spansRef.current[i] = el)}
-              data-char={displayChar}
+              data-char={char}
               className="inline-block"
-              style={isSpace ? { width: '0.5ch' } : undefined}
             >
-              {displayChar}
+              {char}
             </span>
           );
         })}
