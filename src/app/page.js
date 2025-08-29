@@ -218,8 +218,8 @@ export default function Home() {
         </div>
         </div>
       </section>
-
-
+      {/* White background wrapper that takes over from here */}
+      <div id="content-white" style={{ position: "relative", zIndex: 0, background: "#ffffff", color: "#111111" }}>
       {/* About Section (scroll target) */}
       <section id="about" style={{ position: "relative", zIndex: 1 }}>
         <div
@@ -228,19 +228,18 @@ export default function Home() {
             display: "grid",
             placeItems: "center",
             padding: "clamp(2rem, 4vw, 4rem) 1rem",
-            color: "#eaeaea",
+            color: "#111111",
           }}
         >
           <div
             style={{
               width: "min(96vw, 1100px)",
-              background:
-                "linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))",
-              backdropFilter: "blur(10px)",
+              background: "#ffffff",
+              backdropFilter: "none",
               borderRadius: 24,
               padding: "clamp(1.5rem, 3vw, 2.5rem)",
-              boxShadow: "0 20px 60px rgba(0,0,0,0.45)",
-              border: "1px solid rgba(255,255,255,0.12)",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
+              border: "1px solid #eeeeee",
               scrollMarginTop: 96,
             }}
             className="cursor-target"
@@ -255,22 +254,22 @@ export default function Home() {
             >
               <div style={{ textAlign: "left" }}>
                 <h2 style={{ fontSize: "clamp(1.75rem, 5vw, 3rem)", margin: 0, letterSpacing: "0.3px" }}>About Me</h2>
-                <p style={{ marginTop: 14, lineHeight: 1.8, color: "#d8d8d8", fontSize: "clamp(1rem, 1.4vw, 1.125rem)" }}>
+                <p style={{ marginTop: 14, lineHeight: 1.8, color: "#333333", fontSize: "clamp(1rem, 1.4vw, 1.125rem)" }}>
                   I create interactive web experiences that blend animation, performance,
                   and crisp UI. I enjoy building immersive visuals and thoughtful
                   micro‑interactions that feel fast and alive.
                 </p>
                 <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 18 }}>
                   {["React", "Next.js", "Three.js", "GSAP", "UX"].map((pill) => (
-                    <span key={pill} style={{ padding: "8px 12px", borderRadius: 9999, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", fontSize: 13, color: "#eaeaea" }}>{pill}</span>
+                    <span key={pill} style={{ padding: "8px 12px", borderRadius: 9999, background: "rgba(0,0,0,0.06)", border: "1px solid rgba(0,0,0,0.08)", fontSize: 13, color: "#333333" }}>{pill}</span>
                   ))}
                 </div>
               </div>
               <div style={{ display: "grid", gap: 12 }}>
                 {[{ n: "30+", l: "UI experiments" }, { n: "10+", l: "Projects delivered" }, { n: "3+", l: "Years learning" }].map((s, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "baseline", gap: 12, background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, padding: "14px 16px" }}>
-                    <div style={{ fontSize: "clamp(1.4rem, 4vw, 2.2rem)", fontWeight: 700, color: "#fff" }}>{s.n}</div>
-                    <div style={{ color: "#cfcfcf", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)" }}>{s.l}</div>
+                  <div key={i} style={{ display: "flex", alignItems: "baseline", gap: 12, background: "rgba(0,0,0,0.04)", border: "1px solid rgba(0,0,0,0.08)", borderRadius: 16, padding: "14px 16px" }}>
+                    <div style={{ fontSize: "clamp(1.4rem, 4vw, 2.2rem)", fontWeight: 700, color: "#111111" }}>{s.n}</div>
+                    <div style={{ color: "#555555", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)" }}>{s.l}</div>
                   </div>
                 ))}
               </div>
@@ -303,7 +302,7 @@ export default function Home() {
         <div
           style={{
             padding: "2rem 1rem 3rem 1rem",
-            color: "#eaeaea",
+            color: "#111111",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -314,32 +313,32 @@ export default function Home() {
             style={{
               width: "min(96vw, 780px)",
               textAlign: "center",
-              background: "rgba(0,0,0,0.35)",
-              backdropFilter: "blur(4px)",
+              background: "rgba(0,0,0,0.04)",
+              backdropFilter: "none",
               borderRadius: 16,
               padding: 24,
-              boxShadow: "0 8px 24px rgba(0,0,0,0.35)",
-              border: "1px solid rgba(255,255,255,0.12)",
+              boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
+              border: "1px solid rgba(0,0,0,0.08)",
             }}
           >
             <div style={{ display: "flex", flexDirection: "column", gap: 14, alignItems: "center" }}>
               <div style={{ display: "flex", gap: 14, flexWrap: "wrap", alignItems: "center", justifyContent: "center" }}>
-                <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" style={{ color: "#fff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
+                <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" style={{ color: "#111", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
                   <FaGithub aria-hidden="true" /> GitHub
                 </a>
-                <a href="https://www.linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer" style={{ color: "#fff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
+                <a href="https://www.linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer" style={{ color: "#111", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
                   <FaLinkedin aria-hidden="true" /> LinkedIn
                 </a>
-                <a href="https://twitter.com/yourusername" target="_blank" rel="noopener noreferrer" style={{ color: "#fff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
+                <a href="https://twitter.com/yourusername" target="_blank" rel="noopener noreferrer" style={{ color: "#111", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
                   <FaTwitter aria-hidden="true" /> Twitter
                 </a>
-                <a href="https://instagram.com/yourusername" target="_blank" rel="noopener noreferrer" style={{ color: "#fff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
+                <a href="https://instagram.com/yourusername" target="_blank" rel="noopener noreferrer" style={{ color: "#111", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
                   <FaInstagram aria-hidden="true" /> Instagram
                 </a>
               </div>
-              <p style={{ margin: 0, color: "#cfcfcf" }}>
+              <p style={{ margin: 0, color: "#555555" }}>
                 Special thanks to {" "}
-                <a href="https://reactbits.dev" target="_blank" rel="noopener noreferrer" style={{ color: "#fff", textDecoration: "none" }}>React Bits</a>
+                <a href="https://reactbits.dev" target="_blank" rel="noopener noreferrer" style={{ color: "#111", textDecoration: "none" }}>React Bits</a>
                 {" "}for inspiration that helped make this site possible.
               </p>
             </div>
@@ -369,12 +368,12 @@ export default function Home() {
             display: "grid",
             placeItems: "center",
             padding: "clamp(2rem, 4vw, 4rem) 1rem",
-            color: "#eaeaea",
+            color: "#111111",
           }}
         >
           <div style={{ width: "min(96vw, 1150px)", marginBottom: 16 }}>
             <h2 style={{ fontSize: "clamp(1.75rem, 5vw, 3rem)", margin: 0 }}>Projects</h2>
-            <p style={{ marginTop: 10, color: "#cfcfcf", maxWidth: 820 }}>
+            <p style={{ marginTop: 10, color: "#555555", maxWidth: 820 }}>
               A selection of interactive builds and visuals. Replace these tiles with your real work.
             </p>
           </div>
@@ -394,24 +393,24 @@ export default function Home() {
                   key={i}
                   style={{
                     position: "relative",
-                    background: `linear-gradient(140deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02))`,
-                    border: `1px solid rgba(255,255,255,0.12)`,
+                    background: `#ffffff`,
+                    border: `1px solid #eeeeee`,
                     borderRadius: 18,
                     padding: 18,
-                    boxShadow: "0 14px 40px rgba(0,0,0,0.45)",
+                    boxShadow: "0 10px 28px rgba(0,0,0,0.08)",
                     minHeight: 220,
                     overflow: "hidden",
                   }}
                   className="cursor-target"
                 >
-                  <div style={{ position: "absolute", inset: 0, background: `radial-gradient(600px 160px at 0% 0%, ${accent}22, transparent)` }} />
-                  <h3 style={{ margin: 0, fontSize: "clamp(1.1rem, 2vw, 1.5rem)", color: "#fff", position: "relative" }}>Project {i}</h3>
-                  <p style={{ marginTop: 8, color: "#c9c9c9", position: "relative" }}>
+                  <div style={{ position: "absolute", inset: 0, background: `radial-gradient(600px 160px at 0% 0%, ${accent}15, transparent)` }} />
+                  <h3 style={{ margin: 0, fontSize: "clamp(1.1rem, 2vw, 1.5rem)", color: "#111", position: "relative" }}>Project {i}</h3>
+                  <p style={{ marginTop: 8, color: "#555555", position: "relative" }}>
                     A short description goes here. Replace with your actual project.
                   </p>
                   <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 10, position: "relative" }}>
                     {["React", "WebGL", "Animation"].map((t) => (
-                      <span key={t} style={{ fontSize: 12, padding: "6px 10px", borderRadius: 9999, background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.12)" }}>{t}</span>
+                      <span key={t} style={{ fontSize: 12, padding: "6px 10px", borderRadius: 9999, background: "rgba(0,0,0,0.06)", border: "1px solid rgba(0,0,0,0.12)" }}>{t}</span>
                     ))}
                   </div>
                 </div>
@@ -427,7 +426,7 @@ export default function Home() {
           style={{
             minHeight: "60vh",
             padding: "3rem 1rem",
-            color: "#eaeaea",
+            color: "#111111",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -437,22 +436,24 @@ export default function Home() {
             style={{
               width: "min(96vw, 780px)",
               textAlign: "center",
-              background: "rgba(0,0,0,0.35)",
-              backdropFilter: "blur(4px)",
+              background: "#ffffff",
+              backdropFilter: "none",
               borderRadius: 16,
               padding: 24,
-              boxShadow: "0 8px 24px rgba(0,0,0,0.35)",
+              boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
+              border: "1px solid rgba(0,0,0,0.08)",
             }}
             className="cursor-target"
           >
             <h2 style={{ margin: 0, fontSize: "clamp(1.25rem, 4vw, 2rem)" }}>Contact</h2>
-            <p style={{ marginTop: 12, color: "#cfcfcf" }}>
+            <p style={{ marginTop: 12, color: "#555555" }}>
               Want to collaborate or say hi? Drop a line at
-              <span style={{ color: "#fff" }}> your@email.com</span>.
+              <span style={{ color: "#111" }}> your@email.com</span>.
             </p>
           </div>
         </div>
       </section>
+      </div>
     </main>
   );
 }
