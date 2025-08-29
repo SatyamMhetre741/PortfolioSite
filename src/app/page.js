@@ -104,8 +104,87 @@ export default function Home() {
   const brandName = "Satyam Mhetre";
   const containerRef = useRef(null);
   const [bgActive, setBgActive] = useState(true);
+  // Parallax (no React state on scroll) — smoother and lighter
+  const projectsSectionRef = useRef(null);
+  const projectsTitleRef = useRef(null);
+  const projectsGalleryRef = useRef(null);
+  const reducedMotionRef = useRef(false);
+  const sectionTopRef = useRef(0);
+  const sectionHeightRef = useRef(0);
+  const tickingRef = useRef(false);
 
   // Removed previous white-wrapper observer to avoid side-effects from scroll reveal experiments
+
+  // Respect user reduced motion preference (use ref to avoid re-renders)
+  useEffect(() => {
+    const m = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => { reducedMotionRef.current = !!m.matches; };
+    update();
+    m.addEventListener?.('change', update);
+    return () => m.removeEventListener?.('change', update);
+  }, []);
+
+  // Measure section geometry
+  useEffect(() => {
+    const compute = () => {
+      const el = projectsSectionRef.current;
+      if (el) {
+        const r = el.getBoundingClientRect();
+        sectionTopRef.current = window.scrollY + r.top;
+        sectionHeightRef.current = el.offsetHeight || (window.innerHeight * 2);
+      }
+    };
+    compute();
+    window.addEventListener('resize', compute);
+    // Also observe section size changes
+    const ro = 'ResizeObserver' in window ? new ResizeObserver(() => compute()) : null;
+    if (ro && projectsSectionRef.current) ro.observe(projectsSectionRef.current);
+    return () => {
+      window.removeEventListener('resize', compute);
+      if (ro && projectsSectionRef.current) ro.unobserve(projectsSectionRef.current);
+    };
+  }, []);
+
+  // Smooth parallax via rAF-throttled scroll, writing styles directly (no React state on scroll)
+  useEffect(() => {
+    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+    const onScroll = () => {
+      if (tickingRef.current) return;
+      tickingRef.current = true;
+      requestAnimationFrame(() => {
+        const top = sectionTopRef.current;
+        const h = sectionHeightRef.current || (window.innerHeight * 2);
+        const scrolled = window.scrollY - top;
+        const maxScroll = Math.max(1, h - window.innerHeight);
+        let p = Math.min(1, Math.max(0, scrolled / maxScroll));
+        if (reducedMotionRef.current) p = 1;
+        const eased = easeOutCubic(p);
+
+        const titleEl = projectsTitleRef.current;
+        const galleryEl = projectsGalleryRef.current;
+        if (titleEl) {
+          titleEl.style.opacity = String(1 - eased);
+          titleEl.style.transform = `translateY(${(-6 * eased).toFixed(2)}vh)`;
+          titleEl.style.willChange = 'transform, opacity';
+        }
+        if (galleryEl) {
+          const start = 0.2;
+          const local = Math.max(0, Math.min(1, (p - start) / (1 - start)));
+          const gl = easeOutCubic(local);
+          const ty = (24 * (1 - gl)).toFixed(2); // from 24vh -> 0
+          const sc = (0.92 + 0.08 * gl).toFixed(4); // 0.92 -> 1
+          galleryEl.style.opacity = String(gl);
+          galleryEl.style.transform = `translateY(${ty}vh) scale(${sc})`;
+          galleryEl.style.willChange = 'transform, opacity';
+        }
+        tickingRef.current = false;
+      });
+    };
+    // initialize once
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   // (simplified) removed projects zoom and gallery effects
 
@@ -342,10 +421,10 @@ export default function Home() {
       />
     </div>
 
-    {/* Projects intro/title (simple) */}
-    <section id="projects" style={{ position: 'relative', zIndex: 1, background: '#000' }}>
-      <div style={{ minHeight: '100vh', position: 'relative', display: 'grid', placeItems: 'center', color: '#fff' }}>
-        <div id="projects-title" style={{ position: 'relative', width: '90vw', height: '400px', margin: '0 auto', whiteSpace: 'nowrap', overflow: 'hidden' }}>
+    {/* Projects intro/title with parallax zoom transition */}
+  <section id="projects" ref={projectsSectionRef} style={{ position: 'relative', zIndex: 1, background: '#000', height: '200vh' }}>
+      <div style={{ position: 'sticky', top: 0, minHeight: '100vh', display: 'grid', placeItems: 'center', color: '#fff' }}>
+    <div id="projects-title" ref={projectsTitleRef} style={{ position: 'relative', width: '90vw', height: '400px', margin: '0 auto', whiteSpace: 'nowrap', overflow: 'hidden', opacity: 1, transform: 'translateY(0)' }}>
           <TextPressure
             text="Projects"
             flex={true}
@@ -360,12 +439,13 @@ export default function Home() {
             wordGapEm={1}
           />
         </div>
+    {/* Overlay circle removed for performance */}
       </div>
     </section>
 
     {/* Projects gallery right after the title */}
     <section id="projects-gallery" style={{ position: 'relative', zIndex: 1, background: '#000' }}>
-      <div style={{ minHeight: '100vh', position: 'relative' }}>
+      <div ref={projectsGalleryRef} style={{ minHeight: '100vh', position: 'relative', opacity: 0, transform: 'translateY(24vh) scale(0.92)', transition: 'opacity 0.2s linear' }}>
         <InfiniteMenu items={projectslist} />
       </div>
     </section>
