@@ -88,6 +88,16 @@ export default function Home() {
     { title: 'DrFilEz', link: 'https://github.com/SatyamMhetre741/DrFilEz', image: '', description: '' },
   ];
 
+  // Core skills for pills and stat computation (edit to your stack)
+  const skills = ["React", "Next.js", "Node", "Express", "MongoDB", "DSA", "ML"];
+
+  // About stats - dynamic and easy to personalize
+  const profileStats = [
+    { n: String(projectslist.length), l: "Public projects" },
+    { n: String(skills.length), l: "Core tools" },
+    { n: "3", l: "Years learning" },
+  ];
+
 
   // Brand name to show instead of logo
   const brandName = "Satyam Mhetre";
@@ -298,25 +308,25 @@ export default function Home() {
               <div style={{ textAlign: "left" }}>
                 <h2 style={{ fontSize: "clamp(1.75rem, 5vw, 3rem)", margin: 0, letterSpacing: "0.3px" }}>About Me</h2>
                 <p style={{ marginTop: 14, lineHeight: 1.8, color: "#333333", fontSize: "clamp(1rem, 1.4vw, 1.125rem)" }}>
-                  I create interactive web experiences that blend animation, performance,
-                  and crisp UI. I enjoy building immersive visuals and thoughtful
-                  micro‑interactions that feel fast and alive.
+                  I create full stack apps that blend animation, performance,
+                  and crisp UI. I enjoy building things and keep exploring the 
+                  vast world of computer sciences.
                 </p>
                 <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 18 }}>
-                  {["React", "Next.js", "Three.js", "GSAP", "UX"].map((pill) => (
+                  {skills.map((pill) => (
                     <span key={pill} style={{ padding: "8px 12px", borderRadius: 9999, background: "rgba(0,0,0,0.06)", border: "1px solid rgba(0,0,0,0.08)", fontSize: 13, color: "#333333" }}>{pill}</span>
                   ))}
                 </div>
               </div>
               <div style={{ display: "grid", gap: 12 }}>
-                {[{ n: "30+", l: "UI experiments" }, { n: "10+", l: "Projects delivered" }, { n: "3+", l: "Years learning" }].map((s, i) => (
+                {profileStats.map((s, i) => (
                   <div key={i} style={{ display: "flex", alignItems: "baseline", gap: 12, background: "rgba(0,0,0,0.04)", border: "1px solid rgba(0,0,0,0.08)", borderRadius: 16, padding: "14px 16px" }}>
                     <div style={{ fontSize: "clamp(1.4rem, 4vw, 2.2rem)", fontWeight: 700, color: "#111111" }}>{s.n}</div>
                     <div style={{ color: "#555555", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)" }}>{s.l}</div>
                   </div>
                 ))}
               </div>
-              <div style={{ display: "flex", justifyContent: "center" }}>
+              {/* <div style={{ display: "flex", justifyContent: "center" }}>
                 <TiltedCard
                   imageSrc={myPic?.src || "/images/me.jpg"}
                   altText="Satyam Mhetre"
@@ -336,61 +346,14 @@ export default function Home() {
                     </p>
                   }
                 />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
         
       </section>
 
-      {/* Footer */}
-      <footer id="footer" style={{ position: "relative", zIndex: 1 }}>
-        <div
-          style={{
-            padding: "2rem 1rem 3rem 1rem",
-            color: "#111111",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <div
-            className="cursor-target"
-            style={{
-              width: "min(96vw, 780px)",
-              textAlign: "center",
-              background: "rgba(0,0,0,0.04)",
-              backdropFilter: "none",
-              borderRadius: 16,
-              padding: 24,
-              boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
-              border: "1px solid rgba(0,0,0,0.08)",
-            }}
-          >
-            <div style={{ display: "flex", flexDirection: "column", gap: 14, alignItems: "center" }}>
-              <div style={{ display: "flex", gap: 14, flexWrap: "wrap", alignItems: "center", justifyContent: "center" }}>
-                <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" style={{ color: "#111", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
-                  <FaGithub aria-hidden="true" /> GitHub
-                </a>
-                <a href="https://www.linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer" style={{ color: "#111", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
-                  <FaLinkedin aria-hidden="true" /> LinkedIn
-                </a>
-                <a href="https://twitter.com/yourusername" target="_blank" rel="noopener noreferrer" style={{ color: "#111", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
-                  <FaTwitter aria-hidden="true" /> Twitter
-                </a>
-                <a href="https://instagram.com/yourusername" target="_blank" rel="noopener noreferrer" style={{ color: "#111", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
-                  <FaInstagram aria-hidden="true" /> Instagram
-                </a>
-              </div>
-              <p style={{ margin: 0, color: "#555555" }}>
-                Special thanks to {" "}
-                <a href="https://reactbits.dev" target="_blank" rel="noopener noreferrer" style={{ color: "#111", textDecoration: "none" }}>React Bits</a>
-                {" "}for inspiration that helped make this site possible.
-              </p>
-            </div>
-          </div>
-        </div>
-      </footer>
+  {/* Footer moved to global layout */}
 
       {/* Projects Section */}
       <div style={{ height: '200px', position: 'relative', overflow: 'hidden'}}>
@@ -413,8 +376,7 @@ export default function Home() {
         <InfiniteMenu items={projectslist} />
       </div>
     </section>
-  {/* Removed old grid-based Projects section */}
-
+    
       {/* Contact Section */}
       <section id="contact" style={{ position: "relative", zIndex: 1 }}>
         <div
@@ -443,7 +405,7 @@ export default function Home() {
             <h2 style={{ margin: 0, fontSize: "clamp(1.25rem, 4vw, 2rem)" }}>Contact</h2>
             <p style={{ marginTop: 12, color: "#555555" }}>
               Want to collaborate or say hi? Drop a line at
-              <span style={{ color: "#111" }}> your@email.com</span>.
+              <span style={{ color: "#111" }}> satyamgmhetre741@gmail.com</span>.
             </p>
           </div>
         </div>
