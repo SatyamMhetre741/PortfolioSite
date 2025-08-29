@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Hyperspeed from "./components/road";
 import FuzzyText from "./components/fuzzy-text";
 import CardNav from './components/card-nav'
@@ -18,7 +18,7 @@ export default function Home() {
     style.textContent = `
   /* Cursor will be hidden by TargetCursor when needed */
   html, body { margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+  html { scroll-padding-top: 88px; }
     `;
     document.head.appendChild(style);
     return () => document.head.removeChild(style);
@@ -75,6 +75,27 @@ export default function Home() {
   // Brand name to show instead of logo
   const brandName = "Satyam Mhetre";
   const containerRef = useRef(null);
+  const [bgActive, setBgActive] = useState(true);
+
+  // Pause background when white content is in view to prevent scroll jitter
+  useEffect(() => {
+    const white = document.getElementById('content-white');
+    if (!white) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            setBgActive(false);
+          } else if (e.boundingClientRect.top > 0) {
+            setBgActive(true);
+          }
+        }
+      },
+      { root: null, threshold: 0.01 }
+    );
+    io.observe(white);
+    return () => io.disconnect();
+  }, []);
 
   return (
   <main style={{ position: "relative", minHeight: "100vh", width: "100%" }}>
@@ -97,6 +118,7 @@ export default function Home() {
 
   {/* Hyperspeed background */}
   <Hyperspeed
+          active={bgActive}
           effectOptions={{
             distortion: "turbulentDistortion",
             length: 400,

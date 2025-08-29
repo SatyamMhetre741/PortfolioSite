@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import * as THREE from 'three';
 import { BloomEffect, EffectComposer, EffectPass, RenderPass, SMAAEffect, SMAAPreset } from 'postprocessing';
 
-const Hyperspeed = ({ effectOptions = {
+const Hyperspeed = ({ active = true, effectOptions = {
   onSpeedUp: () => { },
   onSlowDown: () => { },
   distortion: 'turbulentDistortion',
@@ -41,6 +41,14 @@ const Hyperspeed = ({ effectOptions = {
 } }) => {
   const containerRef = useRef(null);
   const appRef = useRef(null);
+  const activeRef = useRef(active);
+
+  useEffect(() => {
+    activeRef.current = active;
+    if (appRef.current) {
+      appRef.current.isActive = !!active;
+    }
+  }, [active]);
   
   useEffect(() => {
     if (appRef.current) {
@@ -337,7 +345,7 @@ const Hyperspeed = ({ effectOptions = {
       }
     }
 
-    class App {
+  class App {
       constructor(container, options = {}) {
         this.options = options;
         if (this.options.distortion == null) {
@@ -417,6 +425,9 @@ const Hyperspeed = ({ effectOptions = {
         this.speedUpTarget = 0;
         this.speedUp = 0;
         this.timeOffset = 0;
+
+  // Activity flag to allow external pause of heavy rendering
+  this.isActive = activeRef.current ?? true;
 
         this.tick = this.tick.bind(this);
         this.init = this.init.bind(this);
@@ -598,6 +609,8 @@ const Hyperspeed = ({ effectOptions = {
       }
 
       render(delta) {
+        // Skip expensive render when paused
+        if (!this.isActive) return;
         this.composer.render(delta);
       }
 
@@ -639,8 +652,10 @@ const Hyperspeed = ({ effectOptions = {
           this.camera.updateProjectionMatrix();
         }
         const delta = this.clock.getDelta();
-        this.render(delta);
-        this.update(delta);
+        if (this.isActive) {
+          this.render(delta);
+          this.update(delta);
+        }
         requestAnimationFrame(this.tick);
       }
     }
@@ -1156,7 +1171,7 @@ const Hyperspeed = ({ effectOptions = {
       const options = { ...effectOptions };
       options.distortion = distortions[options.distortion];
 
-      const myApp = new App(container, options);
+  const myApp = new App(container, options);
       appRef.current = myApp;
       myApp.loadAssets().then(myApp.init);
     })();
