@@ -8,6 +8,8 @@ import TargetCursor from "./components/target-cursor";
 import TiltedCard from './components/title-card';
 import LogoLoop from './components/logo-loop';
 import VariableProximity from './components/variable-proximity';
+import InfiniteMenu from './components/infinite-menu'
+import ViewBadge from './components/view-badge';
 import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss } from 'react-icons/si';
 import { FaGithub, FaLinkedin, FaTwitter, FaInstagram } from "react-icons/fa";
 
@@ -72,6 +74,34 @@ export default function Home() {
   ];
 
 
+  const projectslist = [
+    {
+      image: 'https://picsum.photos/300/300?grayscale',
+      link: 'https://google.com/',
+      title: 'Item 1',
+  description: ''
+    },
+    {
+      image: 'https://picsum.photos/400/400?grayscale',
+      link: 'https://google.com/',
+      title: 'Item 2',
+  description: ''
+    },
+    {
+      image: 'https://picsum.photos/500/500?grayscale',
+      link: 'https://google.com/',
+      title: 'Item 3',
+  description: ''
+    },
+    {
+      image: 'https://picsum.photos/600/600?grayscale',
+      link: 'https://google.com/',
+      title: 'Item 4',
+  description: ''
+    }
+  ];
+
+
   // Brand name to show instead of logo
   const brandName = "Satyam Mhetre";
   const containerRef = useRef(null);
@@ -115,6 +145,9 @@ export default function Home() {
 
       {/* Custom cursor */}
       <TargetCursor spinDuration={3} hideDefaultCursor={true} />
+
+  {/* Views badge */}
+  <ViewBadge start={47} />
 
   {/* Hyperspeed background */}
   <Hyperspeed
@@ -195,7 +228,7 @@ export default function Home() {
       style={{position: 'relative'}}
           >
             <VariableProximity
-              label={"Lost on a never ending road...but we all are, aren't we"}
+              label={"Traveller on the road of infinite learnings"}
               className={'variable-proximity-demo'}
               fromFontVariationSettings="'wght' 400, 'opsz' 9"
               toFontVariationSettings="'wght' 800, 'opsz' 40"
@@ -383,6 +416,12 @@ export default function Home() {
         ariaLabel="Technology partners"
       />
     </div>
+
+    <section id="projects-gallery" style={{ position: 'relative', zIndex: 1, background: '#000' }}>
+      <div style={{ minHeight: '100vh', position: 'relative' }}>
+        <InfiniteMenu items={projectslist} />
+      </div>
+    </section>
       <section id="projects" style={{ position: "relative", zIndex: 1 }}>
         <div
           style={{
