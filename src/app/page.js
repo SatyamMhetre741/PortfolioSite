@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Hyperspeed from "./components/road";
-import FuzzyText from "./components/fuzzy-text";
+// import FuzzyText from "./components/fuzzy-text";
 import CardNav from './components/card-nav'
 import TextPressure from './components/pressure-text';
 import TargetCursor from "./components/target-cursor";
@@ -9,10 +9,11 @@ import TiltedCard from './components/title-card';
 import myPic from "./images/me.jpg";
 import LogoLoop from './components/logo-loop';
 import VariableProximity from './components/variable-proximity';
+import ScrollReveal from './components/scroll-reveal';
 import InfiniteMenu from './components/infinite-menu'
 import ViewBadge from './components/view-badge';
 import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss } from 'react-icons/si';
-import { FaGithub, FaLinkedin, FaTwitter, FaInstagram } from "react-icons/fa";
+// Unused social icons removed from this file
 
 export default function Home() {
   // Hide default cursor globally
@@ -104,25 +105,9 @@ export default function Home() {
   const containerRef = useRef(null);
   const [bgActive, setBgActive] = useState(true);
 
-  // Pause background when white content is in view to prevent scroll jitter
-  useEffect(() => {
-    const white = document.getElementById('content-white');
-    if (!white) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            setBgActive(false);
-          } else if (e.boundingClientRect.top > 0) {
-            setBgActive(true);
-          }
-        }
-      },
-      { root: null, threshold: 0.01 }
-    );
-    io.observe(white);
-    return () => io.disconnect();
-  }, []);
+  // Removed previous white-wrapper observer to avoid side-effects from scroll reveal experiments
+
+  // (simplified) removed projects zoom and gallery effects
 
   return (
   <main style={{ position: "relative", minHeight: "100vh", width: "100%" }}>
@@ -235,41 +220,29 @@ export default function Home() {
               style={{ fontFamily: '"Roboto Flex", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif', fontSize: 'clamp(2rem, 6vw, 5rem)', lineHeight: 1.1, letterSpacing: 0.5 }}
             />
           </div>
-
+          
 
     </div>
 
-  {/* Close hero container */}
   </div>
 
-    {/* Welcome text below the hero (visible after scrolling) */}
-      <section id="welcome" style={{ position: "relative", zIndex: 1 }}>
-        <div
-          style={{
-            minHeight: "50vh",
-            display: "grid",
-            placeItems: "center",
-            padding: "2rem 1rem",
-            color: "#eaeaea",
-          }}
-        >
-          <div style={{ position: 'relative', width: '90vw', height: '400px', margin: '0 auto', whiteSpace: 'nowrap', overflow: 'hidden' }}>
-          <TextPressure
-            text="Welcome to my portfolio!"
-            flex={true}
-            alpha={true}
-            stroke={false}
-            width={true}
-            weight={true}
-            italic={true}
-            textColor="#ffffff"
-            strokeColor="#ff0000"
-            minFontSize={128}
-            wordGapEm={1}
-          />
-        </div>
-        </div>
-      </section>
+  {/* Standalone Welcome section on black background */}
+  <section id="welcome" style={{ position: 'relative', zIndex: 1, background: '#000', color: '#fff' }}>
+    <div style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', padding: '2rem 1rem' }}>
+      <ScrollReveal
+        baseOpacity={0.6}
+        enableBlur={true}
+        baseRotation={5}
+        blurStrength={4}
+        containerClassName="text-center"
+        textClassName="text-[clamp(2.4rem,7vw,4.5rem)] font-extrabold leading-[1.1] tracking-tight"
+      >
+        {"Welcome to my portfolio!"}
+      </ScrollReveal>
+    </div>
+  </section>
+
+    
       {/* White background wrapper that takes over from here */}
       <div id="content-white" style={{ position: "relative", zIndex: 0, background: "#ffffff", color: "#111111" }}>
       {/* About Section (scroll target) */}
@@ -308,9 +281,7 @@ export default function Home() {
               <div style={{ textAlign: "left" }}>
                 <h2 style={{ fontSize: "clamp(1.75rem, 5vw, 3rem)", margin: 0, letterSpacing: "0.3px" }}>About Me</h2>
                 <p style={{ marginTop: 14, lineHeight: 1.8, color: "#333333", fontSize: "clamp(1rem, 1.4vw, 1.125rem)" }}>
-                  I create full stack apps that blend animation, performance,
-                  and crisp UI. I enjoy building things and keep exploring the 
-                  vast world of computer sciences.
+                  Second-year IT student | Aspiring Full Stack Developer | Exploring AI, Web & Cloud
                 </p>
                 <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 18 }}>
                   {skills.map((pill) => (
@@ -326,7 +297,7 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-              {/* <div style={{ display: "flex", justifyContent: "center" }}>
+              <div style={{ display: "flex", justifyContent: "center" }}>
                 <TiltedCard
                   imageSrc={myPic?.src || "/images/me.jpg"}
                   altText="Satyam Mhetre"
@@ -346,7 +317,7 @@ export default function Home() {
                     </p>
                   }
                 />
-              </div> */}
+              </div>
             </div>
           </div>
         </div>
@@ -371,11 +342,34 @@ export default function Home() {
       />
     </div>
 
+    {/* Projects intro/title (simple) */}
+    <section id="projects" style={{ position: 'relative', zIndex: 1, background: '#000' }}>
+      <div style={{ minHeight: '100vh', position: 'relative', display: 'grid', placeItems: 'center', color: '#fff' }}>
+        <div id="projects-title" style={{ position: 'relative', width: '90vw', height: '400px', margin: '0 auto', whiteSpace: 'nowrap', overflow: 'hidden' }}>
+          <TextPressure
+            text="Projects"
+            flex={true}
+            alpha={true}
+            stroke={false}
+            width={true}
+            weight={true}
+            italic={false}
+            textColor="#ffffff"
+            strokeColor="#ff0000"
+            minFontSize={128}
+            wordGapEm={1}
+          />
+        </div>
+      </div>
+    </section>
+
+    {/* Projects gallery right after the title */}
     <section id="projects-gallery" style={{ position: 'relative', zIndex: 1, background: '#000' }}>
       <div style={{ minHeight: '100vh', position: 'relative' }}>
         <InfiniteMenu items={projectslist} />
       </div>
     </section>
+
     
       {/* Contact Section */}
       <section id="contact" style={{ position: "relative", zIndex: 1 }}>
@@ -411,6 +405,7 @@ export default function Home() {
         </div>
       </section>
       </div>
+  {/* Scroll-driven zoom overlay implemented above; discrete overlay removed */}
     </main>
   );
 }
