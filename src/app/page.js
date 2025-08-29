@@ -1,17 +1,18 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import Hyperspeed from "./components/road";
-// import FuzzyText from "./components/fuzzy-text";
-import CardNav from './components/card-nav'
-import TextPressure from './components/pressure-text';
-import TargetCursor from "./components/target-cursor";
-import TiltedCard from './components/title-card';
+import dynamic from "next/dynamic";
+// Client-heavy components are lazy loaded to reduce initial JS
+const Hyperspeed = dynamic(() => import("./components/road"), { ssr: false });
+const CardNav = dynamic(() => import('./components/card-nav'), { ssr: false });
+const TextPressure = dynamic(() => import('./components/pressure-text'), { ssr: false });
+const TargetCursor = dynamic(() => import("./components/target-cursor"), { ssr: false });
+const TiltedCard = dynamic(() => import('./components/title-card'), { ssr: false });
 import myPic from "./images/me.jpg";
-import LogoLoop from './components/logo-loop';
-import VariableProximity from './components/variable-proximity';
-import ScrollReveal from './components/scroll-reveal';
-import InfiniteMenu from './components/infinite-menu'
-import ViewBadge from './components/view-badge';
+const LogoLoop = dynamic(() => import('./components/logo-loop'), { ssr: false });
+const VariableProximity = dynamic(() => import('./components/variable-proximity'), { ssr: false });
+const ScrollReveal = dynamic(() => import('./components/scroll-reveal'), { ssr: false });
+const InfiniteMenu = dynamic(() => import('./components/infinite-menu'), { ssr: false });
+const ViewBadge = dynamic(() => import('./components/view-badge'), { ssr: false });
 import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss } from 'react-icons/si';
 // Unused social icons removed from this file
 
@@ -104,6 +105,11 @@ export default function Home() {
   const brandName = "Satyam Mhetre";
   const containerRef = useRef(null);
   const [bgActive, setBgActive] = useState(true);
+  // Defer heavy client widgets
+  const [showHyperspeed, setShowHyperspeed] = useState(false);
+  const [showTargetCursor, setShowTargetCursor] = useState(false);
+  const [showLogoLoop, setShowLogoLoop] = useState(false);
+  const [showInfiniteMenu, setShowInfiniteMenu] = useState(false);
   // Parallax (no React state on scroll) — smoother and lighter
   const projectsSectionRef = useRef(null);
   const projectsTitleRef = useRef(null);
@@ -122,6 +128,26 @@ export default function Home() {
     update();
     m.addEventListener?.('change', update);
     return () => m.removeEventListener?.('change', update);
+  }, []);
+
+  // Idle-mount above-the-fold heavy visuals to improve TTI
+  useEffect(() => {
+    const idle = typeof window !== 'undefined' && 'requestIdleCallback' in window
+      ? window.requestIdleCallback((deadline) => {
+          setShowHyperspeed(true);
+          setShowTargetCursor(true);
+        }, { timeout: 300 })
+      : setTimeout(() => {
+          setShowHyperspeed(true);
+          setShowTargetCursor(true);
+        }, 120);
+    return () => {
+      if (typeof window !== 'undefined' && 'cancelIdleCallback' in window) {
+        window.cancelIdleCallback?.(idle);
+      } else {
+        clearTimeout(idle);
+      }
+    };
   }, []);
 
   // Measure section geometry
@@ -186,6 +212,30 @@ export default function Home() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Viewport-based mounting for below-the-fold visuals
+  useEffect(() => {
+    const logoLoopEl = document.getElementById('logo-loop');
+    const galleryEl = document.getElementById('projects-gallery');
+    if (!('IntersectionObserver' in window)) {
+      setShowLogoLoop(true);
+      setShowInfiniteMenu(true);
+      return;
+    }
+    const obs = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.target === logoLoopEl && e.isIntersecting) {
+          setShowLogoLoop(true);
+        }
+        if (e.target === galleryEl && e.isIntersecting) {
+          setShowInfiniteMenu(true);
+        }
+      }
+    }, { rootMargin: '200px' });
+    logoLoopEl && obs.observe(logoLoopEl);
+    galleryEl && obs.observe(galleryEl);
+    return () => obs.disconnect();
+  }, []);
+
   // (simplified) removed projects zoom and gallery effects
 
   return (
@@ -204,13 +254,14 @@ export default function Home() {
   ctaLabel="Resume"
       />
 
-      {/* Custom cursor */}
-      <TargetCursor spinDuration={3} hideDefaultCursor={true} />
+  {/* Custom cursor (mounted after idle) */}
+  {showTargetCursor && <TargetCursor spinDuration={3} hideDefaultCursor={true} />}
 
   {/* Views badge */}
   <ViewBadge start={47} />
 
   {/* Hyperspeed background */}
+  {showHyperspeed && (
   <Hyperspeed
           active={bgActive}
           effectOptions={{
@@ -248,7 +299,8 @@ export default function Home() {
               sticks: 0x03b3c3,
             },
           }}
-        />
+    />
+  )}
 
   {/* Hero */}
       <div
@@ -406,8 +458,9 @@ export default function Home() {
   {/* Footer moved to global layout */}
 
       {/* Projects Section */}
-      <div style={{ height: '200px', position: 'relative', overflow: 'hidden'}}>
-      <LogoLoop
+  <div id="logo-loop" style={{ height: '200px', position: 'relative', overflow: 'hidden'}}>
+  {showLogoLoop && (
+  <LogoLoop
         logos={techLogos}
         speed={120}
         direction="left"
@@ -419,6 +472,7 @@ export default function Home() {
         fadeOutColor="#ffffff"
         ariaLabel="Technology partners"
       />
+  )}
     </div>
 
     {/* Projects intro/title with parallax zoom transition */}
@@ -446,7 +500,7 @@ export default function Home() {
     {/* Projects gallery right after the title */}
     <section id="projects-gallery" style={{ position: 'relative', zIndex: 1, background: '#000' }}>
       <div ref={projectsGalleryRef} style={{ minHeight: '100vh', position: 'relative', opacity: 0, transform: 'translateY(24vh) scale(0.92)', transition: 'opacity 0.2s linear' }}>
-        <InfiniteMenu items={projectslist} />
+        {showInfiniteMenu && <InfiniteMenu items={projectslist} />}
       </div>
     </section>
 
