@@ -6,6 +6,7 @@ import CardNav from './components/card-nav'
 import TextPressure from './components/pressure-text';
 import TargetCursor from "./components/target-cursor";
 import TiltedCard from './components/title-card';
+import myPic from "./images/me.jpg";
 import LogoLoop from './components/logo-loop';
 import VariableProximity from './components/variable-proximity';
 import InfiniteMenu from './components/infinite-menu'
@@ -75,30 +76,16 @@ export default function Home() {
 
 
   const projectslist = [
-    {
-      image: 'https://picsum.photos/300/300?grayscale',
-      link: 'https://google.com/',
-      title: 'Item 1',
-  description: ''
-    },
-    {
-      image: 'https://picsum.photos/400/400?grayscale',
-      link: 'https://google.com/',
-      title: 'Item 2',
-  description: ''
-    },
-    {
-      image: 'https://picsum.photos/500/500?grayscale',
-      link: 'https://google.com/',
-      title: 'Item 3',
-  description: ''
-    },
-    {
-      image: 'https://picsum.photos/600/600?grayscale',
-      link: 'https://google.com/',
-      title: 'Item 4',
-  description: ''
-    }
+    { title: 'PortfolioSite', link: 'https://github.com/SatyamMhetre741/PortfolioSite', image: '', description: '' },
+    { title: 'chatbot-ollama-mistral', link: 'https://github.com/SatyamMhetre741/chatbot-ollama-mistral', image: '', description: '' },
+    { title: 'TextAnalyzer-HuggingFace', link: 'https://github.com/SatyamMhetre741/TextAnalyzer-HuggingFace', image: '', description: '' },
+    { title: 'Airbnb-clone', link: 'https://github.com/SatyamMhetre741/Airbnb-clone', image: '', description: '' },
+    { title: 'FullStack-Todo', link: 'https://github.com/SatyamMhetre741/FullStack-Todo', image: '', description: '' },
+    { title: 'DDOS_Attack_detection', link: 'https://github.com/SatyamMhetre741/DDOS_Attack_detection', image: '', description: '' },
+    { title: 'CapHunter', link: 'https://github.com/SatyamMhetre741/CapHunter', image: '', description: '' },
+    { title: 'Tic-Tac-Toe', link: 'https://github.com/SatyamMhetre741/Tic-Tac-Toe', image: '', description: '' },
+    { title: 'CurrencyConverter', link: 'https://github.com/SatyamMhetre741/CurrencyConverter', image: '', description: '' },
+    { title: 'DrFilEz', link: 'https://github.com/SatyamMhetre741/DrFilEz', image: '', description: '' },
   ];
 
 
@@ -139,8 +126,8 @@ export default function Home() {
   buttonBgColor="#111111"
   buttonTextColor="#ffffff"
         ease="power3.out"
-    ctaHref="#about"
-    ctaLabel="Get Started"
+  ctaHref="/resume"
+  ctaLabel="Resume"
       />
 
       {/* Custom cursor */}
@@ -305,6 +292,7 @@ export default function Home() {
                 gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
                 gap: 24,
                 alignItems: "center",
+                justifyItems: "center",
               }}
             >
               <div style={{ textAlign: "left" }}>
@@ -328,28 +316,31 @@ export default function Home() {
                   </div>
                 ))}
               </div>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <TiltedCard
+                  imageSrc={myPic?.src || "/images/me.jpg"}
+                  altText="Satyam Mhetre"
+                  captionText="Satyam Mhetre"
+                  containerHeight="320px"
+                  containerWidth="320px"
+                  imageHeight="320px"
+                  imageWidth="320px"
+                  rotateAmplitude={12}
+                  scaleOnHover={1.12}
+                  showMobileWarning={false}
+                  showTooltip={true}
+                  displayOverlayContent={true}
+                  overlayContent={
+                    <p className="tilted-card-demo-text">
+                      Satyam Mhetre
+                    </p>
+                  }
+                />
+              </div>
             </div>
           </div>
         </div>
-        <TiltedCard
-        imageSrc="https://i.scdn.co/image/ab67616d0000b273d9985092cd88bffd97653b58"
-        altText="Kendrick Lamar - GNX Album Cover"
-        captionText="Kendrick Lamar - GNX"
-        containerHeight="300px"
-        containerWidth="300px"
-        imageHeight="300px"
-        imageWidth="300px"
-        rotateAmplitude={12}
-        scaleOnHover={1.2}
-        showMobileWarning={false}
-        showTooltip={true}
-        displayOverlayContent={true}
-        overlayContent={
-          <p className="tilted-card-demo-text">
-            Kendrick Lamar - GNX
-          </p>
-        }
-      />
+        
       </section>
 
       {/* Footer */}
@@ -422,64 +413,7 @@ export default function Home() {
         <InfiniteMenu items={projectslist} />
       </div>
     </section>
-      <section id="projects" style={{ position: "relative", zIndex: 1 }}>
-        <div
-          style={{
-            minHeight: "100vh",
-            display: "grid",
-            placeItems: "center",
-            padding: "clamp(2rem, 4vw, 4rem) 1rem",
-            color: "#111111",
-          }}
-        >
-          <div style={{ width: "min(96vw, 1150px)", marginBottom: 16 }}>
-            <h2 style={{ fontSize: "clamp(1.75rem, 5vw, 3rem)", margin: 0 }}>Projects</h2>
-            <p style={{ marginTop: 10, color: "#555555", maxWidth: 820 }}>
-              A selection of interactive builds and visuals. Replace these tiles with your real work.
-            </p>
-          </div>
-          <div
-            style={{
-              width: "min(96vw, 1150px)",
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-              gap: 20,
-            }}
-          >
-            {[1, 2, 3, 4, 5, 6].map((i) => {
-              const accents = ["#03b3c3", "#d856bf", "#6750a2", "#0e5ea5", "#c247ac", "#324555"];
-              const accent = accents[(i - 1) % accents.length];
-              return (
-                <div
-                  key={i}
-                  style={{
-                    position: "relative",
-                    background: `#ffffff`,
-                    border: `1px solid #eeeeee`,
-                    borderRadius: 18,
-                    padding: 18,
-                    boxShadow: "0 10px 28px rgba(0,0,0,0.08)",
-                    minHeight: 220,
-                    overflow: "hidden",
-                  }}
-                  className="cursor-target"
-                >
-                  <div style={{ position: "absolute", inset: 0, background: `radial-gradient(600px 160px at 0% 0%, ${accent}15, transparent)` }} />
-                  <h3 style={{ margin: 0, fontSize: "clamp(1.1rem, 2vw, 1.5rem)", color: "#111", position: "relative" }}>Project {i}</h3>
-                  <p style={{ marginTop: 8, color: "#555555", position: "relative" }}>
-                    A short description goes here. Replace with your actual project.
-                  </p>
-                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 10, position: "relative" }}>
-                    {["React", "WebGL", "Animation"].map((t) => (
-                      <span key={t} style={{ fontSize: 12, padding: "6px 10px", borderRadius: 9999, background: "rgba(0,0,0,0.06)", border: "1px solid rgba(0,0,0,0.12)" }}>{t}</span>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+  {/* Removed old grid-based Projects section */}
 
       {/* Contact Section */}
       <section id="contact" style={{ position: "relative", zIndex: 1 }}>

@@ -919,25 +919,6 @@ export default function InfiniteMenu({ items = [] }) {
 
       {activeItem && (
         <>
-          <h2
-            style={{
-              position: 'absolute',
-              left: '8vw',
-              top: '50%',
-              transform: 'translateY(-50%) translateX(20%)',
-              fontWeight: 900,
-              fontSize: 'clamp(2rem, 6vw, 4rem)',
-              color: '#ffffff',
-              margin: 0,
-              opacity: isMoving ? 0 : 1,
-              pointerEvents: isMoving ? 'none' : 'auto',
-              transition: 'opacity 500ms ease',
-              userSelect: 'none',
-            }}
-          >
-            {activeItem.title}
-          </h2>
-
           <p
             style={{
               position: 'absolute',
